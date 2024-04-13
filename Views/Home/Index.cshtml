@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <h1 class="display-4">Redis Alıştırmaları</h1>
+    <div id="redis-list">
+        
+    </div>
+    <div class="row mb-3">
+    <div class="col-12"><button class="btn btn-warning" onclick="GetData()">Yenile</button></div>
+        <form method="POST">
+            <input type="hidden" id="id" />
+            <div class="row">
+            <div class="col-1">Ad</div>
+            <div class="col-9">
+            <input type="text" id="ad" name="FirstName" placeholder="Ad" required minlength="2">
+            </div>
+            </div>
+            <div class="row mt-2">
+            <div class="col-1">Soyad</div>
+            <div class="col-9">
+            <input type="text" id="soyad" name="LastName" placeholder="Soyad" required minlength="2">
+            </div>
+            </div>
+            <div class="row mt-2">
+            <div class="col-1">Kaç Saniye Cache'de kalsın</div>
+            <div class="col-9">
+            <input type="text" id="ttl" name="Ttl" placeholder="Time to live" required minlength="2">
+            </div>
+            </div>
+            @* <label for="dogumtarihi">Doğum Tarihi</label>
+            <input type="date" name="BirthDate" id="dogumtarihi" required> *@
+            <button id="save-btn" class="btn btn-success mt-2" type="submit">Kaydet</button>
+            <button id="save-btn" class="btn btn-primary mt-2" type="button" onclick="Temizle()">Temizle</button>
+        </form>
+    </div>
+</div>
+
+
