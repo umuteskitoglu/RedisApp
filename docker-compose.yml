@@ -1,0 +1,16 @@
+
+services:
+  redis-stack:
+    image: redis/redis-stack:latest
+    hostname: redis-stack
+    ports:
+      - "7777:6379"
+      - "7778:8001"
+  my-app:
+    image: redis-app-image
+    depends_on:
+      - redis-stack
+    links:
+      - redis-stack:redis-stack
+    ports:
+      - "8080:8080"
