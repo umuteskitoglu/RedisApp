@@ -33,9 +33,9 @@
 /Users/umuteskitoglu/Desktop/projects/RedisApp/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
 /Users/umuteskitoglu/Desktop/projects/RedisApp/bin/Debug/net8.0/StackExchange.Redis.dll
 /Users/umuteskitoglu/Desktop/projects/RedisApp/obj/Debug/net8.0/RedisApp.csproj.AssemblyReference.cache
-/Users/umuteskitoglu/Desktop/projects/RedisApp/obj/Debug/net8.0/RedisApp.csproj.CopyComplete
 /Users/umuteskitoglu/Desktop/projects/RedisApp/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/umuteskitoglu/Desktop/projects/RedisApp/bin/Debug/net8.0/Newtonsoft.Json.dll
 /Users/umuteskitoglu/Desktop/projects/RedisApp/bin/Debug/net8.0/Redis.OM.dll
 /Users/umuteskitoglu/Desktop/projects/RedisApp/bin/Debug/net8.0/Ulid.dll
 /Users/umuteskitoglu/Desktop/projects/RedisApp/obj/Debug/net8.0/RedisApp.sourcelink.json
+/Users/umuteskitoglu/Desktop/projects/RedisApp/obj/Debug/net8.0/RedisApp.csproj.Up2Date
