@@ -6,7 +6,9 @@ COPY . ./
 RUN dotnet restore
 
 # Projeyi yayınla
-RUN dotnet publish -c Release -o out
+RUN for project in $(find . -name '*.csproj'); do \
+    dotnet publish -c Release -o /app/out/$(dirname $project)/publish $project; \
+done
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
