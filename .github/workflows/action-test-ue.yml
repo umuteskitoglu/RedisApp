@@ -1,4 +1,4 @@
-name: Umut Github Acions Demo
+name: Umut Github Acions Demo run
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
