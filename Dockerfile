@@ -5,9 +5,12 @@ WORKDIR /app
 COPY . ./
 RUN dotnet restore
 
-# Projeyi yayınla
+# Her bir projeyi yayınla ve ayrı bir çıkış dizinine yerleştir
 RUN for project in $(find . -name '*.csproj'); do \
-    dotnet publish -c Release -o /app/out/$(dirname $project)/publish $project; \
+    project_dir=$(dirname $project); \
+    publish_dir=/app/out/$(basename $project_dir)/publish; \
+    mkdir -p $publish_dir; \
+    dotnet publish -c Release -o $publish_dir $project; \
 done
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
