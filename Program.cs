@@ -2,6 +2,7 @@ using System.Data;
 using NRedisStack;
 using Redis.OM;
 using RedisApp;
+using RedisApp.Services;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,8 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(provider =>
 
 builder.Services.AddSingleton(new RedisConnectionProvider(connectionMultiplexer));
 builder.Services.AddHostedService<IndexCreationService>();
+builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

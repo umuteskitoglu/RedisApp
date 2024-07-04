@@ -6,6 +6,7 @@ using Redis.OM;
 using Redis.OM.Modeling;
 using Redis.OM.Searching;
 using RedisApp.Models;
+using RedisApp.Services;
 using StackExchange.Redis;
 
 namespace RedisApp.Controllers;
@@ -32,18 +33,12 @@ public class Person
 }
 public class HomeController : Controller
 {
-    private readonly IRedisCollection<Person> users;
-
-    private readonly ILogger<HomeController> _logger;
-    private readonly IConnectionMultiplexer _redisDb;
-    private readonly RedisConnectionProvider _provider;
-    public HomeController(ILogger<HomeController> logger, IConnectionMultiplexer redisDb, RedisConnectionProvider provider)
+    IRedisCacheService _redisCacheService;
+    public HomeController(ILogger<HomeController> logger, IRedisCacheService redisCacheService)
     {
-        _logger = logger;
-        _redisDb = redisDb;
-        _provider = provider;
-        users = _provider.RedisCollection<Person>();
+        _redisCacheService = redisCacheService;
     }
+
 
     public async Task<IActionResult> Index()
     {
@@ -51,45 +46,36 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> GetAll()
     {
-        return Ok(users.ToList());
+        return Ok(await _redisCacheService.GetItems<Person>());
     }
     [HttpPost]
     public async Task<IActionResult> Kaydet(PersonModel model)
     {
-        var db = _redisDb.GetDatabase();
         //await users.InsertAsync(person);
-        var json = db.JSON();
         if (model.person.Id == null)
         {
             model.person.Id = Guid.NewGuid().ToString();
-            var key = "Person:" + model.person.Id;
-            string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(model.person);
-            await json.SetAsync(key, "$", jsonString);
-            if (model.Ttl.HasValue)
-            {
-                db.KeyExpire(key, new TimeSpan(0, 0, model.Ttl.Value));
-            }
+            await _redisCacheService.Cache(model.person, "Person", new TimeSpan(0, 0, model.Ttl.Value));
             return Ok("Kayıt işlemi başarılı");
         }
         else
         {
-            var updateUser = await users.FindByIdAsync(model.person.Id);
+            var updateUser = await _redisCacheService.GetItem<Person>(model.person.Id);
             if (updateUser != null)
             {
                 updateUser.FirstName = model.person.FirstName;
                 updateUser.LastName = model.person.LastName;
-                var key = "Person:" + updateUser.Id;
-
-                await json.SetAsync(key, "$", Newtonsoft.Json.JsonConvert.SerializeObject(updateUser));
+                TimeSpan? timespan = null;
                 if (model.Ttl.HasValue)
                 {
-                    db.KeyExpire(key, new TimeSpan(0, 0, model.Ttl.Value));
+                    timespan = new TimeSpan(0, 0, model.Ttl.Value);
                 }
-                return Ok("Güncelleme işlemi başarılı");
+                var result = await _redisCacheService.UpdateItem(updateUser, "Person", timespan);
+                return Ok(result ? "Güncelleme işlemi başarılı" : "Güncelleme işlemi başarısız.");
             }
             else
             {
-                return Ok("Güncelleme işlemi yapılamadı. Kullanıcı yok.");
+                return Ok("Güncelleme işlemi yapılamadı. Kullanıcı bulunamadı.");
             }
         }
 
@@ -97,9 +83,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<JsonResult> RemoveItem(string id)
     {
-        var db = _redisDb.GetDatabase();
-        var isRemoved = await db.KeyDeleteAsync("Person:" + id);
-
+        var isRemoved = await _redisCacheService.DeleteKey("Person:" + id);
         return Json(isRemoved ? "Silme işlemi başarılı" : "Silme işlemi başarısız.");
     }
     public async Task<IActionResult> Privacy()
