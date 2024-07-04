@@ -13,6 +13,8 @@ services:
   my-app:
     image: rascal98/redis-app-image
     container_name: c_redis_app
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     ports:
       - "8080:8080"
     networks:
