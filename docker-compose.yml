@@ -2,12 +2,14 @@
 services:
   redis-stack:
     image: redis/redis-stack:latest
+    container_name: c_redis
     hostname: redis-stack
     ports:
-      - "7777:6379"
-      - "7778:8001"
+      - "6379:6379"
+      - "8001:8001"
   my-app:
     image: redis-app-image
+    container_name: c_redis_app
     depends_on:
       - redis-stack
     links:
