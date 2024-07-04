@@ -9,7 +9,7 @@ services:
       - "6379:6379"
       - "8001:8001"
   my-app:
-    image: umuteskitoglu/redis-app-image
+    image: rascal98/redis-app-image
     container_name: c_redis_app
     ports:
       - "8080:8080"
