@@ -17,7 +17,7 @@ public class PersonModel
     public int? Ttl { get; set; }
 }
 
-[Document(StorageType = StorageType.Json, Prefixes = new[] { "Person" })]
+[Document(StorageType = StorageType.Json, Prefixes = new[] { "person" })]
 public class Person
 {
     [RedisIdField][Indexed] public string? Id { get; set; }
@@ -55,7 +55,7 @@ public class HomeController : Controller
         if (model.person.Id == null)
         {
             model.person.Id = Guid.NewGuid().ToString();
-            await _redisCacheService.Cache(model.person, "Person", new TimeSpan(0, 0, model.Ttl.Value));
+            await _redisCacheService.Cache(model.person, "person", new TimeSpan(0, 0, model.Ttl.Value));
             return Ok("Kayıt işlemi başarılı");
         }
         else
@@ -70,7 +70,7 @@ public class HomeController : Controller
                 {
                     timespan = new TimeSpan(0, 0, model.Ttl.Value);
                 }
-                var result = await _redisCacheService.UpdateItem(updateUser, "Person", timespan);
+                var result = await _redisCacheService.UpdateItem(updateUser, "person", timespan);
                 return Ok(result ? "Güncelleme işlemi başarılı" : "Güncelleme işlemi başarısız.");
             }
             else
@@ -83,7 +83,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<JsonResult> RemoveItem(string id)
     {
-        var isRemoved = await _redisCacheService.DeleteKey("Person:" + id);
+        var isRemoved = await _redisCacheService.DeleteKey("person:" + id);
         return Json(isRemoved ? "Silme işlemi başarılı" : "Silme işlemi başarısız.");
     }
     public async Task<IActionResult> Privacy()

@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
-
+EXPOSE 8080
 # Projeyi kopyala ve restore et
 COPY . ./
 RUN dotnet restore
