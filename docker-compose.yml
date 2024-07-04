@@ -6,7 +6,7 @@ services:
     networks:
       - backend_net
     environment:
-      - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
+      - REDIS_ARGS=--requirepass Umut_123
     ports:
       - "6379:6379"
       - "8001:8001"
