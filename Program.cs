@@ -14,7 +14,9 @@ var redisUri = builder.Configuration["RedisConnectionString"];
 ConfigurationOptions options = new ConfigurationOptions
 {
     EndPoints = { redisUri },
-    AbortOnConnectFail = false
+    AbortOnConnectFail = false,
+    User="default",
+    Password=builder.Configuration["RedisPassword"]
 };
 ConnectionMultiplexer connectionMultiplexer= ConnectionMultiplexer.Connect(options);
 builder.Services.AddSingleton<IConnectionMultiplexer>(provider =>
