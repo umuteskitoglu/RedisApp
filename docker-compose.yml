@@ -5,6 +5,8 @@ services:
     container_name: c_redis
     networks:
       - backend_net
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     ports:
       - "6379:6379"
       - "8001:8001"
