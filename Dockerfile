@@ -14,5 +14,10 @@ WORKDIR /app
 # Önceki aşamadan yayınladığımız dosyaları kopyala
 COPY --from=build-env /app/out .
 
+# Redis password environment variable
+ENV REDIS_PASSWORD your-redis-password
+
+# Replace placeholder in appsettings.json
+RUN sed -i 's/\${REDIS_PASSWORD}/'"$REDIS_PASSWORD"'/g' appsettings.json
 # Uygulamayı çalıştırmak için gerekli komutu belirt
 ENTRYPOINT ["dotnet", "RedisApp.dll"]
